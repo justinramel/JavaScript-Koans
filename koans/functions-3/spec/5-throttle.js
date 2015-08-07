@@ -3,11 +3,39 @@
  * throttle jQuery.ajax
  * throttling + prioritization
  */
+
+var SAMURAIPRINCIPLE = {
+	throttle: function(func, interval) {
+		var lastCalled = -Infinity;
+		var lastFunc;
+
+		return function() {
+			var now = Date.now();
+			var args = Array.prototype.slice.call(arguments);
+			if (lastCalled + interval < now) {
+				lastCalled = now;
+
+				setTimeout(function() {
+					if (lastFunc) {
+						return lastFunc.apply(func, args);
+					}
+				}, (lastCalled - now) + interval);
+
+				return func.apply(func, args);
+			} else {
+				lastFunc = func;
+			}
+		};
+	}
+};
+
 describe('Throttle', function (done) {
-	var priceOnScreen, showPrice, throttledShowPrice;
+	var priceOnScreen, showPrice, throttledShowPrice, showPriceCalled;
 	beforeEach(function () {
+		showPriceCalled = 0;
 		priceOnScreen;
 		showPrice = function (currentPrice) {
+			showPriceCalled++;
 			priceOnScreen = currentPrice;
 		};
 		throttledShowPrice = SAMURAIPRINCIPLE.throttle(showPrice, 1000);
@@ -37,8 +65,12 @@ describe('Throttle', function (done) {
 
 		setTimeout(function () {
 			expect(priceOnScreen).toBe(300);
-			done();
 		}, 1001);
+
+		setTimeout(function () {
+			expect(showPriceCalled).toBe(2);
+			done();
+		}, 1002);
 	});
 	it('4 - should just demonstrate throttle in action - no tests', function (done) {
 		var counter = 0, counterElement = jQuery('#counter'),

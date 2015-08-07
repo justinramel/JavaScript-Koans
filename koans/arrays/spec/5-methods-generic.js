@@ -1,9 +1,27 @@
 /*global describe, expect, it, __*/
 describe('Arrays - generic methods', function () {
+	it('should work', function () {
+		Array.prototype.myJoin = function (delimiter) {
+			var item, result = this[0];
+
+			for (var i = 1; i < this.length; i++) {
+				result += delimiter + this[i];
+			};
+
+			return result;
+		};
+		expect([1, 2, 3].myJoin('.')).toBe('1.2.3');
+		expect(Array.prototype.myJoin.call('Hello', '.')).toBe('1.2.3');
+	});
 	it('1 - should understand join is a generic method', function () {
-		expect(Array.prototype.join.call('Hello', '.')).toBe(__);
-		expect(Array.prototype.join.call({ 0: 'Zero', 1: 'First', 2: 'Second', length: 3 }, '-')).toBe(__);
-		expect(Array.prototype.join.call({ length: 3 }, '-')).toBe(__);
+		//['Hello'].join('.')
+		expect(Array.prototype.join.call('Hello', '.')).toBe('H.e.l.l.o');
+		// ['Zero', 'First', 'Second', 3 }].join('-') // Zero-First-Second-3
+		// [ {0: 'Zero'}, {1: 'First'}, {2: 'Second'}, {length: 3}] // 0-Zero-1-First
+
+		expect(Array.prototype.join.call({  0: 'Zero', 1: 'First', length: 3, 2: 'Second' }, '-')).toBe('Zero-First-Second');
+		// expect(Array.prototype.join.call([ 'Zero','First', 'length'], '-')).toBe('Zero-First-Second');
+		expect(Array.prototype.join.call({ length: 3 }, '-')).toBe('--');
 	});
 	it('2 - should understand push is a generic method', function () {
 		var obj = { 0: 'Zero', 1: 'First', 2: 'Second', length: 3 };

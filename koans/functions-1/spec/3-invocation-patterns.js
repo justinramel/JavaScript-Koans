@@ -87,15 +87,15 @@ describe('Invocation patterns', function () {
 					name = value;
 				};
 			}, name = 'Myamoto', samurai = new Samurai(name);
-			expect(name).toBe(__);
-			expect(samurai.name).toBe(__);
-			expect(samurai.getName()).toBe(__);
+			expect(name).toBe('Myamoto');
+			expect(samurai.name).toBe(undefined);
+			expect(samurai.getName()).toBe('Myamoto');
 			samurai.setName('Hattori');
-			expect(name).toBe(__);
-			expect(samurai.getName()).toBe(__);
+			expect(name).toBe('Myamoto');
+			expect(samurai.getName()).toBe('Hattori');
 			samurai.name = 'Myamoto';
-			expect(samurai.name).toBe(__);
-			expect(samurai.getName()).toBe(__);
+			expect(samurai.name).toBe('Myamoto');
+			expect(samurai.getName()).toBe('Hattori');
 		});
 		it('10 - should understand instanceof', function () {
 			var Samurai = function (name) {

@@ -21,5 +21,29 @@ describe('Game of Life', function () {
 			expect(SAMURAIPRINCIPLE.isCellAliveInNextGeneration(false, 2)).toBe(false);
 			expect(SAMURAIPRINCIPLE.isCellAliveInNextGeneration(false, 4)).toBe(false);
 		});
+		it('should work', function () {
+			var mem = function (fn) {
+				var results = {};
+				return function (arg) {
+					return results[arg] = results[arg] || fn(arg);
+				};
+			};
+
+			function getColour(colourName) {
+				console.log('here', colourName);
+				if (colourName === 'red') {
+					return 0xFF0000;
+				} else if (colourName === 'green') {
+					return 0x00FF00;
+				}
+			}
+
+			var memGc = mem(getColour);
+
+			expect(memGc('red')).toBe(0xFF0000);
+			expect(memGc('red')).toBe(0xFF0000);
+			expect(memGc('red')).toBe(0xFF0000);
+			expect(memGc('green')).toBe(0x00FF00);
+		})
 	});
 });

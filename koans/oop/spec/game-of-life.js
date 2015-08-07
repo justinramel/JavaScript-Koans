@@ -1,3 +1,91 @@
+var SAMURAIPRINCIPLE = {
+  GameOfLife: function() {
+  	var self = this;
+  	var world = {};
+
+  	this.isCellAlive = function(row, col) {
+  		var key = createKey(row, col);
+  		return world[key] || false;
+  	};
+
+  	this.toggleCellState = function(row, col) {
+  		var key = createKey(row, col);
+  		var alive = world[key];
+  		if (alive) {
+  			delete world[key];
+  		} else {
+	  		world[key] = true;
+  		}
+  		return this;
+  	};
+
+  	this.tick = function() {
+  		var neighbours = {};
+
+  		for(var key in world) {
+  			neighbours[key] = numberOfNeighbours(key);
+  		}
+
+debugger;
+  		for(var key in world) {
+  			if (isCellAliveByKey(key)) {
+	  			if (neighbours[key] < 2 || neighbours[key] > 3) {
+	  				var key = splitKey(key);
+	  				self.toggleCellState(key.row, key.col);
+  				}
+  			} else {
+	  			if (neighbours[key] === 3) {
+	  				var key = splitKey(key);
+	  				self.toggleCellState(key.row, key.col);
+  				}
+  			}
+  		}
+  	};
+
+  	function createKey(row, col) {
+  		return row.toString() + ':' + col.toString();
+  	}
+
+  	function numberOfNeighbours(key) {
+  		var cell = splitKey(key);
+  		var row = cell.row;
+  		var col = cell.col;
+  		var count = 0;
+
+  		function check(row, col) {
+  			if (self.isCellAlive(row, col)) {
+  				count++;
+  			}
+  		}
+
+  		check(row-1, col-1);
+  		check(row-1, col);
+  		check(row-1, col+1);
+  		check(row, col-1);
+  		check(row, col+1);
+  		check(row+1, col-1);
+  		check(row+1, col);
+  		check(row+1, col+1);
+
+  		return count;
+  	}
+
+  	function isCellAliveByKey(key) {
+  		var cell = splitKey(key);
+  		return self.isCellAlive(cell.row, cell.col);
+  	}
+
+  	function splitKey(key) {
+			var rowCol = key.split(':');
+  		return {
+  			row: parseInt(rowCol[0], 10),
+  			col: parseInt(rowCol[1])
+  		};
+  	}
+
+  }
+};
+
 /*global beforeEach, describe, expect, it, SAMURAIPRINCIPLE*/
 describe('Game of Life', function () {
 	'use strict';

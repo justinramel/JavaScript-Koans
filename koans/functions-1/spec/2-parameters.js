@@ -5,8 +5,8 @@ describe('function parameters', function () {
 		var inc = function (first, second) {
 			return first + (second || 1);
 		};
-		expect(inc(100, 23)).toBe(__);
-		expect(inc(100)).toBe(__);
+		expect(inc(100, 23)).toBe(123);
+		expect(inc(100)).toBe(101);
 		// for bonus points - can you think of a case when inc would behave in an unexpected way?
 		// if yes - write a test to prove it, and then fix the problem.
 	});
@@ -15,14 +15,14 @@ describe('function parameters', function () {
 			delete arg;
 			return arg;
 		};
-		expect(f(123)).toBe(__);
+		expect(f(123)).toBe(123);
 	});
 	it('3 - should understand implicit parameter \'arguments\'', function () {
 		var dec = function () {
 			return arguments[0] - (arguments[1] || 1);
 		};
-		expect(dec(123, 23)).toBe(__);
-		expect(dec(101)).toBe(__);
+		expect(dec(123, 23)).toBe(100);
+		expect(dec(101)).toBe(100);
 	});
 	it('4 - should understand implicit parameter \'arguments\'', function () {
 		var f = function (first, second, third) {
